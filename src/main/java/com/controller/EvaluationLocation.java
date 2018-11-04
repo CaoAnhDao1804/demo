@@ -3,6 +3,7 @@ package com.controller;
 import com.dto.APIResponseDTO;
 import com.dto.EvaluationDTO;
 import com.entity.Evaluation;
+import com.exception.CustomException;
 import com.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,10 @@ public class EvaluationLocation {
     EvaluationService evaluationService;
 
     @PostMapping(value = "/evaluation")
-    public APIResponseDTO evaluationLocation(HttpServletRequest request, @RequestBody() EvaluationDTO evaluationDTO){
+    public APIResponseDTO evaluationLocation (HttpServletRequest request, @RequestBody() EvaluationDTO evaluationDTO) throws CustomException{
+        if (evaluationDTO.getScore() == null) {
+            throw new CustomException("Core not found!",400);
+        }
         return new APIResponseDTO(200,"Evaluation Successfull!", evaluationService.save(evaluationDTO, request));
     }
 

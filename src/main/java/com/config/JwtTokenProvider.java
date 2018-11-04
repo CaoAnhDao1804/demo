@@ -92,7 +92,7 @@ public class JwtTokenProvider {
       Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
       return true;
     } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException("error",500);
+            throw new CustomException("Validate Token Wrong!",422);
     }
   }
 
