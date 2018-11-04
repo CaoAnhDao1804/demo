@@ -2,8 +2,10 @@ package com.controller;
 
 import com.dto.APIResponseDTO;
 import com.dto.LocationProfileDTO;
+import com.dto.LocationProfileForTypeDTO;
 import com.dto.TypeResponseDTO;
 import com.entity.Location;
+import com.exception.LocationNotFoundException;
 import com.model.LocationRequest;
 import com.service.LocationService;
 import com.service.PictureService;
@@ -14,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.activation.FileTypeMap;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -98,7 +102,10 @@ public class LocationController {
 
     @GetMapping(value = "/location/{id}")
     public  APIResponseDTO getLocation( @PathVariable Long id){
-        return  new APIResponseDTO(200,"Success!",locationService.findById(id));
+
+        LocationProfileDTO locationCurrent = locationService.findLocationByIdCheckNotFound(id);
+
+        return  new APIResponseDTO(200,"Success!",locationCurrent);
     }
 
     @GetMapping(value = "/location-by-category/{id}")
@@ -130,7 +137,7 @@ public class LocationController {
     }
 
     @PostMapping(value = "/create-location-non-picture")
-    public  APIResponseDTO createNewLocation(@RequestBody LocationRequest locationRequest) throws IOException {
+    public  APIResponseDTO createNewLocation(@Valid  @RequestBody LocationRequest locationRequest) throws IOException {
         locationService.createNewLocation(locationRequest);
         LocationProfileDTO locationCreated = locationService.getLocationLastest();
 
