@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.MethodNotAllowedException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
@@ -25,10 +26,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(AccessDeniedException.class)
+//  @ExceptionHandler(AccessDeniedException.class)
+  @ExceptionHandler({ AccessDeniedException.class })
   public final ResponseEntity<APIResponseDTO> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
     APIResponseDTO errorDetails = new APIResponseDTO(403, "Access Denied Exception", null);
     return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    return super.handleNoHandlerFoundException(ex, headers, status, request);
   }
 
   @ExceptionHandler(MethodNotAllowedException.class)

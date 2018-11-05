@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -121,12 +122,14 @@ public class LocationController {
     }
 
     @PostMapping(value = "/location")
+    @PreAuthorize("hasAuthority('admin')")
     public APIResponseDTO  createLocation(@RequestBody Location location){
         locationService.createLocation(location);
         return  new APIResponseDTO(201, "Created!",location);
     }
 
     @PostMapping(value = "/create-location")
+    @PreAuthorize("hasAuthority('admin')")
     public  APIResponseDTO createNewLocation(@RequestBody LocationRequest locationRequest, @RequestParam("file") MultipartFile file) throws IOException {
         locationService.createNewLocation(locationRequest);
         Long idLocation = locationService.getIdLocationLastest();
@@ -137,6 +140,7 @@ public class LocationController {
     }
 
     @PostMapping(value = "/create-location-non-picture")
+    @PreAuthorize("hasAuthority('admin')")
     public  APIResponseDTO createNewLocation(@Valid  @RequestBody LocationRequest locationRequest) throws IOException {
         locationService.createNewLocation(locationRequest);
         LocationProfileDTO locationCreated = locationService.getLocationLastest();
@@ -145,6 +149,7 @@ public class LocationController {
     }
 
     @PutMapping(value = "/web/update-location/{idLocation}")
+    @PreAuthorize("hasAuthority('admin')")
     public APIResponseDTO updateLocation(@RequestBody LocationRequest locationRequest, @PathVariable Long idLocation){
 
         LocationProfileDTO locationOld = locationService.findById(idLocation);
@@ -158,6 +163,7 @@ public class LocationController {
     }
 
     @PutMapping(value = "/location/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<Object> editLocation(@RequestBody LocationRequest LocationRequest, @PathVariable Long id){
         LocationProfileDTO locationOld = locationService.findById(id);
         if (locationOld == null) return ResponseEntity.notFound().build();
@@ -166,6 +172,7 @@ public class LocationController {
     }
 
     @DeleteMapping(value = "/location/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public APIResponseDTO deleteLocation(@PathVariable long id) {
         locationService.deleteLocation(id);
         return  new APIResponseDTO(200,"Deleted!", null);
