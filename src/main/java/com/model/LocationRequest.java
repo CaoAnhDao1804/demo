@@ -1,23 +1,21 @@
 package com.model;
 
 
+import com.validation.PhoneValid;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 
 public class LocationRequest {
 
     @NotNull(message = "Name couldn't be Null")
-    @Size(min=2, message="Name should have at least 2 characters")
+    @Size(min= 10, message="Name should have at least 10 characters")
     String name;
 
     @NotNull(message = "Introduction couldn't be Null")
-    @Size(min=2, message="Introduction should have atleast 2 characters")
+    @Size(min=10, message="Introduction should have atleast 10 characters")
     String introduction;
 
     @NotNull(message = "Id Plcae Category couldn't be null")
@@ -35,11 +33,11 @@ public class LocationRequest {
     String address;
 
 
+    @PhoneValid
     String phone;
 
-
+    @Email
     String email;
-
     Long idDuration;
 
     public String getName() {

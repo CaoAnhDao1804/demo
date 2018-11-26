@@ -140,7 +140,6 @@ public class LocationController {
     }
 
     @PostMapping(value = "/create-location-non-picture")
-    @PreAuthorize("hasAuthority('admin')")
     public  APIResponseDTO createNewLocation(@Valid  @RequestBody LocationRequest locationRequest) throws IOException {
         locationService.createNewLocation(locationRequest);
         LocationProfileDTO locationCreated = locationService.getLocationLastest();

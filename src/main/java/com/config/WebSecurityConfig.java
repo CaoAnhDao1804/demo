@@ -2,6 +2,7 @@ package com.config;
 
 import com.filter.JwtTokenFilterConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()//
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/signup").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
     }
 
 
@@ -46,5 +48,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+//    @Bean
+//    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
+//        LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+//        validatorFactoryBean.setValidationMessageSource(messageSource);
+//        return validatorFactoryBean;
+//    }
 
 }
