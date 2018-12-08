@@ -59,4 +59,20 @@ public class PermissService  {
             } else throw new CustomException("Null Table Object", 500);
         } else throw new CustomException("Null IdTable Value", 500);
     }
+
+    public List<Permiss> getAllPermissOfUser(Long idUser) {
+        return permissRespository.findByIdUser(idUser);
+    }
+
+    public Permiss addPermissionForUser(Permiss permiss) {
+        return permissRespository.save(permiss);
+    }
+
+    public boolean deletePermissionOfUser(Permiss permiss) {
+        Permiss permissCurrent = permissRespository.findByIdActionAndIdResourceAndIdUser(permiss.getIdAction(), permiss.getIdResource(), permiss.getIdUser());
+        if (permissCurrent != null){
+            permissRespository.delete(permissCurrent);
+            return true;
+        } else throw new CustomException("Not found permission!", 500);
+    }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public interface PermissRespository extends CrudRepository<Permiss, Long> {
 
     List<Permiss> findByIdUser(Long idUser);
+    Permiss findByIdActionAndIdResourceAndIdUser(Long idAction, Long idResource, Long idUser);
 
 
 }
