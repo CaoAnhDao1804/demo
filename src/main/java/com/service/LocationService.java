@@ -124,7 +124,7 @@ public class LocationService {
         Users usersCurrent = usersRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(request)));
         Role roleCurrent = roleRespository.findById(usersCurrent.getRoleId()).orElse(new Role());
         if (roleCurrent !=  null){
-            if (roleCurrent.getName() == "admin"){
+            if (roleCurrent.getName().equals("admin")){
                 Page<Location> pageLocation = locationRepository.findAll(pageRequest);
                 return getPageLocationDTOFromPageLocation(pageLocation);
             } else {
