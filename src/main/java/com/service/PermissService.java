@@ -27,6 +27,8 @@ public class PermissService  {
     @Autowired
     ResourceTableRespository resourceTableRespository;
 
+
+
     public  List<ActionUser> getAllActionUser(Long idUser){
         List<ActionUser> listActionOfUser = new ArrayList<>();
         if (idUser!=null){
@@ -58,5 +60,29 @@ public class PermissService  {
                 return resourceTable.getName();
             } else throw new CustomException("Null Table Object", 500);
         } else throw new CustomException("Null IdTable Value", 500);
+    }
+
+    public List<Permiss> getAllPermissOfUser(Long idUser) {
+        return permissRespository.findByIdUser(idUser);
+    }
+
+    public Permiss addPermissionForUser(Permiss permiss) {
+        return permissRespository.save(permiss);
+    }
+
+    public boolean deletePermissionOfUser(Permiss permiss) {
+        Permiss permissCurrent = permissRespository.findByIdActionAndIdResourceAndIdUser(permiss.getIdAction(), permiss.getIdResource(), permiss.getIdUser());
+        if (permissCurrent != null){
+            permissRespository.delete(permissCurrent);
+            return true;
+        } else throw new CustomException("Not found permission!", 500);
+    }
+
+    public List<ResourceTable> getAllTableOfUser(Long idUser){
+        return resourceTableRespository.findAllTableOfUserCanDo(idUser);
+    }
+
+    public List<ActionTable> getAllActionOfTableByUser(long idUser, long idTable) {
+        return  actionTableRespository.getAllActionOfTableByUser( idUser,  idTable);
     }
 }
