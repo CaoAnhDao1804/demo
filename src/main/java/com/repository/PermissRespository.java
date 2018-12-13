@@ -13,6 +13,7 @@ public interface PermissRespository extends CrudRepository<Permiss, Long> {
     List<Permiss> findByIdUser(Long idUser);
     Permiss findByIdActionAndIdResourceAndIdUser(Long idAction, Long idResource, Long idUser);
 
+    List<Permiss> findByIdUserAndIdResource(Long idUser, Long idResoure);
 
 
 

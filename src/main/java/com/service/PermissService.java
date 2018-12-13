@@ -1,4 +1,5 @@
 package com.service;
+import com.dto.ActionTableDTO;
 import com.entity.ActionTable;
 import com.entity.Permiss;
 import com.entity.ResourceTable;
@@ -84,5 +85,28 @@ public class PermissService  {
 
     public List<ActionTable> getAllActionOfTableByUser(long idUser, long idTable) {
         return  actionTableRespository.getAllActionOfTableByUser( idUser,  idTable);
+    }
+    public List<ActionTableDTO> getAllActionDTOOfTableByUser(long idUser, long idTable) {
+        List<ActionTableDTO> actionTableDTOS = new ArrayList<>();
+        List<Permiss> permissList =   permissRespository.findByIdUserAndIdResource(idUser, idTable);
+        for (Permiss permiss: permissList){
+            ActionTableDTO actionTableDTO = new ActionTableDTO();
+            actionTableDTO.setId(permiss.getIdAction());
+            actionTableDTO.setIdPermiss(permiss.getId());
+            actionTableDTO.setName(getActionById(permiss.getIdAction()));
+            actionTableDTOS.add(actionTableDTO);
+        }
+        return actionTableDTOS;
+    }
+
+    public boolean checkExistedPermiss(Permiss permiss) {
+        Permiss permissCurrent = permissRespository.findByIdActionAndIdResourceAndIdUser(permiss.getIdAction(), permiss.getIdResource(), permiss.getIdUser());
+        if (permissCurrent !=null )
+            return true;
+        else return false;
+    }
+
+    public void deletePermissById(Long idPermiss){
+         permissRespository.deleteById(idPermiss);
     }
 }
