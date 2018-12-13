@@ -27,6 +27,8 @@ public class PermissService  {
     @Autowired
     ResourceTableRespository resourceTableRespository;
 
+
+
     public  List<ActionUser> getAllActionUser(Long idUser){
         List<ActionUser> listActionOfUser = new ArrayList<>();
         if (idUser!=null){
@@ -74,5 +76,13 @@ public class PermissService  {
             permissRespository.delete(permissCurrent);
             return true;
         } else throw new CustomException("Not found permission!", 500);
+    }
+
+    public List<ResourceTable> getAllTableOfUser(Long idUser){
+        return resourceTableRespository.findAllTableOfUserCanDo(idUser);
+    }
+
+    public List<ActionTable> getAllActionOfTableByUser(long idUser, long idTable) {
+        return  actionTableRespository.getAllActionOfTableByUser( idUser,  idTable);
     }
 }
