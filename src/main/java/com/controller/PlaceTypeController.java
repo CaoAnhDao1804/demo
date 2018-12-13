@@ -21,12 +21,14 @@ public class PlaceTypeController {
     PlaceTypeService placeTypeService;
 
     @GetMapping( value = "/place-types")
-    @PreAuthorize("hasAuthority('admin') or  hasAuthority('mod')")
+//    @PreAuthorize("hasAuthority('admin') or  hasAuthority('mod')")
+    @PreAuthorize("hasAuthority('VIEW_PLACETYPE')")
     public APIResponseDTO getPlaceTypes(){
         return new APIResponseDTO(200,"Success!",placeTypeService.findAll());
     }
 
     @GetMapping(value = "/place-type/{id}")
+    @PreAuthorize("hasAuthority('VIEW_PLACETYPE')")
     public  APIResponseDTO getPlaceType( @PathVariable Long id){
         return  new APIResponseDTO(200,"Success!",placeTypeService.findById(id));
     }
@@ -37,6 +39,7 @@ public class PlaceTypeController {
     }
 
     @PostMapping(value = "/place-type")
+    @PreAuthorize("hasAuthority('ADD_PLACETYPE')")
     public APIResponseDTO createPlaceType(@RequestBody PlaceType placeType){
         placeTypeService.save(placeType);
         return  new APIResponseDTO(201,"Created!",placeType);
@@ -44,16 +47,17 @@ public class PlaceTypeController {
     }
 
     @PutMapping(value = "/place-type/{id}")
+    @PreAuthorize("hasAuthority('EDIT_PLACETYPE')")
     public APIResponseDTO  editPlaceType(@RequestBody PlaceType placeType, @PathVariable Long id){
         Optional<PlaceType> placeTypeOld = placeTypeService.findById(id);
         if (!placeTypeOld.isPresent()) return new APIResponseDTO(202, "not Exist", placeType);
         placeType.setId(id);
         placeTypeService.save(placeType);
         return new APIResponseDTO(200, "Edited", placeType);
-
     }
 
     @DeleteMapping(value = "/place-types/{id}")
+    @PreAuthorize("hasAuthority('DEL_PLACETYPE')")
     public APIResponseDTO deleteStudent(@PathVariable long id) {
         placeTypeService.deleteById(id);
         return  new APIResponseDTO(201,"Deleted!",null);

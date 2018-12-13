@@ -9,4 +9,7 @@ public class ActionUser {
     public ActionUser(String name) {
         this.name = name;
     }
+    public ActionUser(){
+
+    }
 }
