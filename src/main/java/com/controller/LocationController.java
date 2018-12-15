@@ -50,9 +50,6 @@ public class LocationController {
         return new APIResponseDTO(200, "OK", locationService.getLocationRequestById(idLocation));
     }
 
-
-
-//    @PreAuthorize("hasAuthority('admin') or  hasAuthority('mod')")
     @GetMapping(value = "/locations/{currentPage}")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //

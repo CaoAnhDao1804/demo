@@ -22,20 +22,20 @@ public class PlaceCategoryController {
     PlaceCategoryService placeCategoryService;
 
     @GetMapping(value = "/place-categories")
-    @PreAuthorize("hasAuthority('VIEW_PLACECATEGORY')")
+    @PreAuthorize("hasAuthority('VIEW_PLACECATEGORY') or hasAuthority('admin')")
 //    @PreAuthorize("hasAuthority('user')")
     public APIResponseDTO findAll(){
         return  new APIResponseDTO(200,"Success!",placeCategoryService.findAllPlaceCategory());
     }
 
     @GetMapping(value = "/place-type/{id}/place-categories")
-//    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAuthority('VIEW_PLACECATEGORY') or hasAuthority('admin')")
     public  APIResponseDTO findAllPlaceCategoryOfOneType(@PathVariable Long id){
         return  new APIResponseDTO(200,"Success", placeCategoryService.findAllPlaceCategoryOfOneType(id));
     }
 
     @GetMapping(value = "/place-category/{id}")
-    @PreAuthorize("hasAuthority('VIEW_PLACECATEGORY')")
+    @PreAuthorize("hasAuthority('VIEW_PLACECATEGORY') or hasAuthority('admin')")
     public  APIResponseDTO getPlaceCategory( @PathVariable Long id){
         return  new APIResponseDTO(200,"Success!",placeCategoryService.findById(id));
     }
@@ -46,14 +46,14 @@ public class PlaceCategoryController {
     }
 
     @PostMapping(value = "/place-category")
-    @PreAuthorize("hasAuthority('VIEW_PLACECATEGORY')")
+    @PreAuthorize("hasAuthority('ADD_PLACECATEGORY') or hasAuthority('admin')")
     public APIResponseDTO  createPlaceCategory(@RequestBody PlaceCategory placeCategory){
         placeCategoryService.createPlaceCategory(placeCategory);
         return  new APIResponseDTO(201,"Created!",placeCategory);
     }
 
     @PutMapping(value = "/place-category/{id}")
-    @PreAuthorize("hasAuthority('EDIT_PLACECATEGORY')")
+    @PreAuthorize("hasAuthority('EDIT_PLACECATEGORY') or hasAuthority('admin')")
     public APIResponseDTO editPlaceCategory(@RequestBody PlaceCategory placeCategory, @PathVariable Long id){
         PlaceCategory placeCategoryOld = placeCategoryService.findById(id).orElse(new PlaceCategory());
         System.out.print(placeCategory.getIdPlaceType());
@@ -65,7 +65,7 @@ public class PlaceCategoryController {
     }
 
     @DeleteMapping(value = "/place-categories/{id}")
-    @PreAuthorize("hasAuthority('DEL_PLACECATEGORY')")
+    @PreAuthorize("hasAuthority('DEL_PLACECATEGORY') or hasAuthority('admin')")
     public APIResponseDTO deletePlaceCategory(@PathVariable long id) {
         placeCategoryService.deletePlaceCategory(id);
         return  new APIResponseDTO(200,"Deleted!", null);
