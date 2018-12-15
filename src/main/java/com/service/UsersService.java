@@ -4,15 +4,10 @@ package com.service;
 import com.anotherAPI.ResponseOtherApi;
 import com.config.JwtTokenProvider;
 import com.dto.*;
-import com.entity.InforUsers;
-import com.entity.Location;
-import com.entity.Traveler;
-import com.entity.Users;
+import com.entity.*;
 import com.exception.CustomException;
-import com.repository.InforUsersRepository;
-import com.repository.RoleRespository;
-import com.repository.TravelerResponsitory;
-import com.repository.UsersRepository;
+import com.repository.*;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +49,14 @@ public class UsersService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    ResourceTableRespository resourceTableRespository;
+
+    @Autowired
+    ActionTableRespository actionTableRespository;
+
+    @Autowired
+    PermissRespository permissRespository;
 
 
 
@@ -166,7 +169,11 @@ public class UsersService {
             newMod.setUsername(userRegisterDTO.getUsername());
             newMod.setStatus(1L);
             newMod.setRoleId(roleRespository.findByName("mod").getId());
+
             Users addedMod = usersRepository.save(newMod);
+
+            if (addAllActionsOfMod(addedMod.getId())!= 0) System.out.println("Add action successfull!");
+
 
             InforUsers inforUsersNew = new InforUsers();
             inforUsersNew.setAddress(userRegisterDTO.getAddress());
@@ -221,5 +228,28 @@ public class UsersService {
             usersProfileDTO.setPhone(inforUsers.getPhone());
         }
         return usersProfileDTO;
+    }
+
+    public Long addAllActionsOfMod(Long idMod){
+        //View type and cate
+        //add location
+        Long countActions = 0L;
+        List<ResourceTable> resourceTables = (List<ResourceTable>) resourceTableRespository.findAll();
+        List<ActionTable> actionTables = (List<ActionTable>) actionTableRespository.findAll();
+        for (ResourceTable resourceTable: resourceTables){
+            Permiss permiss = new Permiss();
+            permiss.setIdUser(idMod);
+            permiss.setIdResource(resourceTable.getId());
+            for (ActionTable actionTable: actionTables){
+                permiss.setIdAction(actionTable.getId());
+                Permiss permissAdded = permissRespository.save(permiss);
+                if (permissAdded.getId()!= null) countActions ++;
+
+            }
+        }
+
+        return countActions;
+
+
     }
 }

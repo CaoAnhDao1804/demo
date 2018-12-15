@@ -3,6 +3,7 @@ package com.controller;
 import com.dto.APIResponseDTO;
 import com.dto.APIResponseDTOExtend;
 import com.entity.Traveler;
+import com.entity.Users;
 import com.model.ActionUser;
 import com.service.PermissService;
 import com.service.TravelerService;
@@ -30,11 +31,16 @@ public class LoginController {
 
     @PostMapping("/login-web")
     public APIResponseDTOExtend loginWeb(@ApiParam("username") @RequestParam String username, @ApiParam("password") @RequestParam String password) {
-        List<ActionUser>  listAction =  permissService.getAllActionUser((21L));
-        if (listAction.size() == 0){
-            listAction.add(new ActionUser("VIEW_PLACECATEGORY"));
-            listAction.add(new ActionUser("ADD_PLACECATEGORY"));
+        List<ActionUser> listActionUsers = new ArrayList<>();
+        if (travelerService.findByEmail(username)!=null){
+            listActionUsers = permissService.getAllActionUser(travelerService.findByEmail(username).getId());
         }
-        return new APIResponseDTOExtend(200, "Login success123!", travelerService.login(username, password), listAction);
+        if (listActionUsers.size() == 0){
+            listActionUsers.add(new ActionUser("VIEW_PLACECATEGORY"));
+            listActionUsers.add(new ActionUser("VIEW_PLACETYPE"));
+            listActionUsers.add(new ActionUser("VIEW_LOCATION"));
+            listActionUsers.add(new ActionUser("VIEW_USER"));
+        }
+        return new APIResponseDTOExtend(200, "Login success123!", travelerService.login(username, password), listActionUsers);
     }
 }
