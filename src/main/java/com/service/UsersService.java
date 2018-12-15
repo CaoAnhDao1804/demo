@@ -236,15 +236,16 @@ public class UsersService {
         Long countActions = 0L;
         List<ResourceTable> resourceTables = (List<ResourceTable>) resourceTableRespository.findAll();
         List<ActionTable> actionTables = (List<ActionTable>) actionTableRespository.findAll();
+
         for (ResourceTable resourceTable: resourceTables){
-            Permiss permiss = new Permiss();
-            permiss.setIdUser(idMod);
-            permiss.setIdResource(resourceTable.getId());
+
             for (ActionTable actionTable: actionTables){
+                Permiss permiss = new Permiss();
+                permiss.setIdUser(idMod);
+                permiss.setIdResource(resourceTable.getId());
                 permiss.setIdAction(actionTable.getId());
                 Permiss permissAdded = permissRespository.save(permiss);
                 if (permissAdded.getId()!= null) countActions ++;
-
             }
         }
 
