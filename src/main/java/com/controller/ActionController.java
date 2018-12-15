@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 1800)
 public class ActionController {
 
     @Autowired
