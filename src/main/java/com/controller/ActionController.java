@@ -1,7 +1,9 @@
 package com.controller;
 
 import com.dto.APIResponseDTO;
+import com.entity.ActionTable;
 import com.entity.Permiss;
+import com.service.ActionTableService;
 import com.service.PermissService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -15,6 +17,14 @@ public class ActionController {
 
     @Autowired
     PermissService permissService;
+
+    @Autowired
+    ActionTableService actionTableService;
+
+    @GetMapping(value = "/api/actions")
+    public APIResponseDTO getAllActions(){
+        return new APIResponseDTO(200, "Ok", actionTableService.getAllActions());
+    }
 
     @GetMapping(value = "/api/actions/{idUser}")
     public APIResponseDTO getAllActionsOfUser(@PathVariable Long idUser){

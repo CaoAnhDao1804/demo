@@ -1,5 +1,6 @@
 package com.service;
 import com.dto.ActionTableDTO;
+import com.dto.PermissionDTO;
 import com.entity.ActionTable;
 import com.entity.Permiss;
 import com.entity.ResourceTable;
@@ -108,5 +109,25 @@ public class PermissService  {
 
     public void deletePermissById(Long idPermiss){
          permissRespository.deleteById(idPermiss);
+    }
+
+    public List<PermissionDTO> getAllPermissionDTOOfUser(Long idUser) {
+        List<ResourceTable> listTableOfUser = resourceTableRespository.findAllTableOfUserCanDo(idUser);
+        List<PermissionDTO> listPermissionDTO = getAllPermissionDTOFromResourcesAndIdUser(listTableOfUser, idUser);
+        return listPermissionDTO;
+    }
+
+    private List<PermissionDTO> getAllPermissionDTOFromResourcesAndIdUser(List<ResourceTable> listTableOfUser, Long idUser) {
+        List<PermissionDTO> permissionDTOList = new ArrayList<>();
+        for (ResourceTable resourceTable: listTableOfUser){
+            PermissionDTO permissionDTO = new PermissionDTO();
+            permissionDTO.setIdTable(resourceTable.getId());
+            permissionDTO.setNameTable(resourceTable.getName());
+            List<ActionTableDTO> actionTableDTOList = new ArrayList<>();
+            actionTableDTOList = getAllActionDTOOfTableByUser(idUser, resourceTable.getId());
+            permissionDTO.setListAction(actionTableDTOList);
+            permissionDTOList.add(permissionDTO);
+        }
+        return permissionDTOList;
     }
 }

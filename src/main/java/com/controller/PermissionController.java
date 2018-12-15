@@ -24,6 +24,11 @@ public class PermissionController {
         return new APIResponseDTO(200,"Ok", permissService.getAllActionDTOOfTableByUser((long) idUser, (long) idTable));
     }
 
+    @GetMapping(value = "/api/permissions/{idUser}")
+    public APIResponseDTO getAllPermissionsOfUser(@PathVariable Long idUser){
+        return new APIResponseDTO(200, "OK", permissService.getAllPermissionDTOOfUser(idUser));
+    }
+
     @DeleteMapping(value = "/delete-action-table/{idUser}/{idTable}/{idAction}")
     public APIResponseDTO deleteActionTable(@PathVariable Long idUser, @PathVariable Long idTable, @PathVariable Long idAction){
         Permiss permissCurrent = new Permiss();
