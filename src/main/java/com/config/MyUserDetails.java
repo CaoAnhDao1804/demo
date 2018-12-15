@@ -42,17 +42,23 @@ public class MyUserDetails implements UserDetailsService {
 
 
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-    List<ActionUser> listActionUser = permissService.getAllActionUser(traveler.getId());
 
-    for (ActionUser actionUser: listActionUser){
-      grantedAuthorities.add( new SimpleGrantedAuthority(actionUser.getName()));
+    Role role = roleRepository.findById(traveler.getRoleId()).orElse(new Role());
+    if (role.getId()!= null){
+      if (role.getName().equals("admin")){
+        grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
+      } else {
+        List<ActionUser> listActionUser = permissService.getAllActionUser(traveler.getId());
+        for (ActionUser actionUser: listActionUser){
+          grantedAuthorities.add( new SimpleGrantedAuthority(actionUser.getName()));
+        }
+      }
+    } else {
+      grantedAuthorities.add(new SimpleGrantedAuthority("VIEW_PLACETYPE"));
+      grantedAuthorities.add(new SimpleGrantedAuthority("VIEW_PLACECATEGORY"));
+      grantedAuthorities.add(new SimpleGrantedAuthority("VIEW_LOCATION"));
+
     }
-//    Role role = roleRepository.findById(traveler.getRoleId()).orElse(new Role());
-////
-//    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-
-
-
 
     return org.springframework.security.core.userdetails.User//
             .withUsername(username)//

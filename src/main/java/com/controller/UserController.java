@@ -38,8 +38,8 @@ public class UserController {
         return new APIResponseDTO(200,"Edit", usersService.editUserProfile(request, inforUsers));
     }
 
-    @PutMapping(value = "/api/web/update-status-of-user")
-    public APIResponseDTO updateStatusUser(@PathParam("idUser") Long idUser){
+    @PutMapping(value = "/api/web/status-of-user/{idUser}")
+    public APIResponseDTO updateStatusUser(@PathVariable Long idUser){
         return new APIResponseDTO(200, "Edited", usersService.updateStatusOfUser(idUser));
     }
 
