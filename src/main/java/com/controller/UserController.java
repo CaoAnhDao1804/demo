@@ -6,6 +6,7 @@ import com.service.UsersService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class UserController {
         return new APIResponseDTO(200, "OK", usersProfileResponse);
     }
 
+    @PreAuthorize("hasAuthority('VIEW_USER') or hasAuthority('admin')")
     @GetMapping(value = "/api/users/{currentPage}")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -38,11 +40,13 @@ public class UserController {
         return new APIResponseDTO(200,"Edit", usersService.editUserProfile(request, inforUsers));
     }
 
+    @PreAuthorize("hasAuthority('EDIT_USER') or hasAuthority('admin')")
     @PutMapping(value = "/api/web/status-of-user/{idUser}")
     public APIResponseDTO updateStatusUser(@PathVariable Long idUser){
         return new APIResponseDTO(200, "Edited", usersService.updateStatusOfUser(idUser));
     }
 
+    @PreAuthorize("hasAuthority('ADD_USER') or hasAuthority('admin')")
     @PostMapping(value = "/api/user")
     public APIResponseDTO addMod(@RequestBody UserRegisterDTO userRegisterDTO){
         return new APIResponseDTO(200,"Ok", usersService.addMod(userRegisterDTO));

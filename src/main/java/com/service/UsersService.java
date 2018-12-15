@@ -238,8 +238,10 @@ public class UsersService {
         List<ActionTable> actionTables = (List<ActionTable>) actionTableRespository.findAll();
 
         for (ResourceTable resourceTable: resourceTables){
-
+            if (resourceTable.getName().equals("USER")) break;
             for (ActionTable actionTable: actionTables){
+
+
                 Permiss permiss = new Permiss();
                 permiss.setIdUser(idMod);
                 permiss.setIdResource(resourceTable.getId());
