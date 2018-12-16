@@ -1,11 +1,13 @@
 package com.exception;
 
 import com.dto.APIResponseDTO;
+import com.validation.ErrorDetail;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.MethodNotAllowedException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 @RestController
@@ -60,9 +65,20 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
   }
 
+
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-      return new ResponseEntity<>(new APIResponseDTO(400, "Validation Failed", ex.getBindingResult().getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+//    return new ResponseEntity<>(new APIResponseDTO(400, "Validation Failed", ex.getBindingResult().getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+    List<FieldError> errors = ex.getBindingResult().getFieldErrors();
+
+    List<ErrorDetail> errorDetails = new ArrayList<>();
+    for (FieldError fieldError : errors) {
+      ErrorDetail error = new ErrorDetail();
+      error.setFieldName(fieldError.getField());
+      error.setMessage(fieldError.getDefaultMessage());
+      errorDetails.add(error);
+    }
+    return new ResponseEntity<>(new APIResponseDTO(400, "Validation Failed", errorDetails), HttpStatus.BAD_REQUEST);
   }
-}
+  }
