@@ -343,7 +343,7 @@ public class LocationService {
 
 
 
-    public LocationProfileDTO findLastestLocationByIdType(Long idType){
+    public LocationProfileForTypeDTO findLastestLocationByIdType(Long idType){
         Location locationSelected =  locationRepository.findLastestLocationByIdType(idType);
         return  getLocationProfileForTypeDTOWithLocation(locationSelected);
     }

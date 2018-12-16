@@ -144,9 +144,8 @@ public class LocationController {
 
 
     @PostMapping(value = "/create-location-non-picture")
-    public  APIResponseDTO createNewLocation(@Valid  @RequestBody LocationRequest locationRequest) throws IOException {
-        locationService.createNewLocation(locationRequest);
-
+    public  APIResponseDTO createNewLocation(HttpServletRequest request,  @Valid @RequestBody LocationRequest locationRequest) throws IOException {
+        locationService.createNewLocation(locationRequest, request);
         LocationProfileDTO locationCreated = locationService.getLocationLastest();
 
         return  new APIResponseDTO(200, "Created", locationCreated);

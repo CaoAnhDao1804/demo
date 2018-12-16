@@ -17,16 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/app")
 public class EvaluationLocation {
 
-    @Autowired
-    EvaluationService evaluationService;
-
-    @PostMapping(value = "/evaluation")
-    public APIResponseDTO evaluationLocation (HttpServletRequest request, @RequestBody() EvaluationDTO evaluationDTO) throws CustomException{
-        if (evaluationDTO.getScore() == null) {
-            throw new CustomException("Core not found!",400);
-        }
-        return new APIResponseDTO(200,"Evaluation Successfull!", evaluationService.save(evaluationDTO, request));
-    }
+//    @Autowired
+//    EvaluationService evaluationService;
+//
+//    @PostMapping(value = "/evaluation")
+//    public APIResponseDTO evaluationLocation (HttpServletRequest request, @RequestBody() EvaluationDTO evaluationDTO) throws CustomException{
+//        if (evaluationDTO.getScore() == null) {
+//            throw new CustomException("Core not found!",400);
+//        }
+//        return new APIResponseDTO(200,"Evaluation Successfull!", evaluationService.save(evaluationDTO, request));
+//    }
 
 
 
