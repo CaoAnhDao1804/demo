@@ -2,9 +2,11 @@ package com.controller;
 
 import com.dto.APIResponseDTO;
 import com.dto.LocationProfileDTO;
+import com.dto.LocationProfileForTypeDTO;
 import com.dto.TypeResponseDTO;
 import com.entity.Address;
 import com.entity.Location;
+import com.exception.LocationNotFoundException;
 import com.entity.Users;
 import com.model.LocationRequest;
 import com.service.*;
@@ -14,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import javax.activation.FileTypeMap;
+import javax.validation.Valid;
 import org.springframework.lang.UsesSunHttpServer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -111,7 +118,10 @@ public class LocationController {
 
     @GetMapping(value = "/location/{id}")
     public  APIResponseDTO getLocation( @PathVariable Long id){
-        return  new APIResponseDTO(200,"Success!",locationService.findById(id));
+
+        LocationProfileDTO locationCurrent = locationService.findLocationByIdCheckNotFound(id);
+
+        return  new APIResponseDTO(200,"Success!",locationCurrent);
     }
 
     @GetMapping(value = "/location-by-category/{id}")
@@ -134,8 +144,9 @@ public class LocationController {
 
 
     @PostMapping(value = "/create-location-non-picture")
-    public  APIResponseDTO createNewLocation(HttpServletRequest request, @RequestBody LocationRequest locationRequest) throws IOException {
-        locationService.createNewLocation(locationRequest, request);
+    public  APIResponseDTO createNewLocation(@Valid  @RequestBody LocationRequest locationRequest) throws IOException {
+        locationService.createNewLocation(locationRequest);
+
         LocationProfileDTO locationCreated = locationService.getLocationLastest();
 
         return  new APIResponseDTO(200, "Created", locationCreated);

@@ -9,6 +9,7 @@ import com.dto.PageLocationDTO;
 import com.dto.TypeResponseDTO;
 import com.dto.*;
 import com.entity.*;
+import com.exception.LocationNotFoundException;
 import com.exception.CustomException;
 import com.model.LocationRequest;
 import com.repository.*;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LocationService {
@@ -327,13 +329,21 @@ public class LocationService {
         return  getLocationProfileDTOWithLocation(locationSelected);
     }
 
-//    public LocationProfileDTO findLastestLocationByIdType(Long idType){
-//        Location locationSelected =  locationRepository.findLastestLocationByIdType(idType);
-//        return  getLocationProfileDTOWithLocation(locationSelected);
-//    }
+    public LocationProfileDTO findLocationByIdCheckNotFound(Long id){
+        Optional<Location> locationOptional = locationRepository.findById(id);
+        if (!locationOptional.isPresent()){
+            throw  new LocationNotFoundException("Location with id = " +id +"not found!");
+        }
+        else {
+            Location locationSelected =  locationRepository.findById(id).orElse(new Location());
+
+            return  getLocationProfileDTOWithLocation(locationSelected);
+        }
+    }
 
 
-    public LocationProfileForTypeDTO findLastestLocationByIdType(Long idType){
+
+    public LocationProfileDTO findLastestLocationByIdType(Long idType){
         Location locationSelected =  locationRepository.findLastestLocationByIdType(idType);
         return  getLocationProfileForTypeDTOWithLocation(locationSelected);
     }
