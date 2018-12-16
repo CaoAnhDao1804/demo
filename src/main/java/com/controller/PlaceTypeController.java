@@ -49,7 +49,7 @@ public class PlaceTypeController {
 
     @PutMapping(value = "/place-type/{id}")
     @PreAuthorize("hasAuthority('EDIT_PLACETYPE') or hasAuthority('admin')")
-    public APIResponseDTO  editPlaceType(@RequestBody PlaceType placeType, @PathVariable Long id){
+    public APIResponseDTO  editPlaceType(@Valid @RequestBody PlaceType placeType, @PathVariable Long id){
         Optional<PlaceType> placeTypeOld = placeTypeService.findById(id);
         if (!placeTypeOld.isPresent()) return new APIResponseDTO(202, "not Exist", placeType);
         placeType.setId(id);
