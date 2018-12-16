@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class PlaceTypeController {
     }
 
     @PostMapping(value = "/place-type")
-    public APIResponseDTO createPlaceType(@RequestBody PlaceType placeType){
+    public APIResponseDTO createPlaceType(@Valid @RequestBody PlaceType placeType){
         placeTypeService.save(placeType);
         return  new APIResponseDTO(201,"Created!",placeType);
 
