@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,7 @@ public class PlaceCategoryController {
 
     @PostMapping(value = "/place-category")
     @PreAuthorize("hasAuthority('ADD_PLACECATEGORY') or hasAuthority('admin')")
-    public APIResponseDTO  createPlaceCategory(@RequestBody PlaceCategory placeCategory){
+    public APIResponseDTO  createPlaceCategory(@Valid  @RequestBody PlaceCategory placeCategory){
         placeCategoryService.createPlaceCategory(placeCategory);
         return  new APIResponseDTO(201,"Created!",placeCategory);
     }
