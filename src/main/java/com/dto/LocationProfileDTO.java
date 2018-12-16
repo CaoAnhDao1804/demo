@@ -17,6 +17,8 @@ public class LocationProfileDTO {
     String content;
     String  status;
     String  address;
+    Double latitude;
+    Double longtude;
     String phone;
     String email;
     String usersname;
@@ -127,5 +129,19 @@ public class LocationProfileDTO {
         this.pictureList = pictureList;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
 
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongtude() {
+        return longtude;
+    }
+
+    public void setLongtude(Double longtude) {
+        this.longtude = longtude;
+    }
 }

@@ -4,6 +4,7 @@ import com.filter.JwtTokenFilterConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,11 +28,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()//
-                .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .anyRequest().authenticated();
 
-
+//                .antMatchers("/app/review/{idLocation}/{crrPage}").authenticated()
+                .antMatchers(HttpMethod.POST, "/place-type").authenticated()
+                .antMatchers(HttpMethod.PUT, "/place-type/{id}").authenticated()
+                .antMatchers(HttpMethod.GET, "/place-types").authenticated()
+                .antMatchers(HttpMethod.GET, "/locations/{currentPage}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/web/update-location/{idLocation}").authenticated()
+                .anyRequest().permitAll();
     }
 
 

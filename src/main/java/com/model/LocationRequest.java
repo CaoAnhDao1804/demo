@@ -22,6 +22,7 @@ public class LocationRequest {
 
     @NotNull(message = "Id Plcae Category couldn't be null")
     @Min(value = 1, message = "Id Place Category should greater than 1 or equal 1")
+    Long idPlaceType;
     Long idPlaceCategory;
 
     @NotNull(message = "Content couldn't be null")
@@ -35,6 +36,9 @@ public class LocationRequest {
     String address;
 
 
+    Double longitudeAddress;
+    Double latitudeAddress;
+    String nameAddress;
     String phone;
 
 
@@ -56,6 +60,14 @@ public class LocationRequest {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public Long getIdPlaceType() {
+        return idPlaceType;
+    }
+
+    public void setIdPlaceType(Long idPlaceType) {
+        this.idPlaceType = idPlaceType;
     }
 
     public Long getIdPlaceCategory() {
@@ -82,12 +94,28 @@ public class LocationRequest {
         this.idStatus = idStatus;
     }
 
-    public String getAddress() {
-        return address;
+    public Double getLongitudeAddress() {
+        return longitudeAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLongitudeAddress(Double longitudeAddress) {
+        this.longitudeAddress = longitudeAddress;
+    }
+
+    public Double getLatitudeAddress() {
+        return latitudeAddress;
+    }
+
+    public void setLatitudeAddress(Double latitudeAddress) {
+        this.latitudeAddress = latitudeAddress;
+    }
+
+    public String getNameAddress() {
+        return nameAddress;
+    }
+
+    public void setNameAddress(String nameAddress) {
+        this.nameAddress = nameAddress;
     }
 
     public String getPhone() {

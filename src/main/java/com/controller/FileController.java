@@ -1,5 +1,7 @@
 package com.controller;
 
+import com.dto.APIResponseDTO;
+import com.entity.Picture;
 import com.service.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,6 +22,8 @@ import java.nio.file.Files;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 1800)
+
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
@@ -27,19 +32,22 @@ public class FileController {
     private FileStorageService fileStorageService;
 
 
-        @PostMapping("/uploadFileAPI")
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("idLocation") Long idLocation) {
-        String fileName = fileStorageService.storeFile(file, idLocation);
+    @PostMapping("/api/upload-image-for-location")
+    public APIResponseDTO uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("idLocation") Long idLocation) {
+        Picture pictureAdded = fileStorageService.storeFile(file, idLocation);
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/downloadFile/")
+                .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
 
-        return fileName + " " +  fileDownloadUri + " " + file.getContentType() + " " + file.getSize();
+        String responInfor =  fileName + " " +  fileDownloadUri + " " + file.getContentType() + " " + file.getSize();
+        return new APIResponseDTO(200,"Created!", pictureAdded );
     }
+
 
 //    @PostMapping("/uploadFileNonLocation")
 //    public String uploadFileNonLocation(@RequestParam("file") MultipartFile file) {
@@ -54,7 +62,7 @@ public class FileController {
 //
 //    }
 
-//    @PostMapping("/uploadMultipleFiles")
+    //    @PostMapping("/uploadMultipleFiles")
 //    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
 //        return Arrays.asList(files)
 //                .stream()

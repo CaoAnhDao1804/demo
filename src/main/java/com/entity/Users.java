@@ -15,6 +15,9 @@ public class Users {
     Long id;
     String username;
     String password;
+    Long roleId;
+    Long status;
+
 
     public Long getId() {
         return id;
@@ -40,5 +43,19 @@ public class Users {
         this.password = password;
     }
 
+    public Long getRoleId() {
+        return roleId;
+    }
 
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
 }

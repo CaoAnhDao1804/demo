@@ -16,6 +16,8 @@ public class Address {
     Long id;
     String name;
     String link;
+    Double longitude;
+    Double latitude;
 
     public Long getId() {
         return id;
@@ -39,5 +41,21 @@ public class Address {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 }
