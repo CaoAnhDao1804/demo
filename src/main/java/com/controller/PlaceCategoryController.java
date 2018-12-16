@@ -55,7 +55,7 @@ public class PlaceCategoryController {
 
     @PutMapping(value = "/place-category/{id}")
     @PreAuthorize("hasAuthority('EDIT_PLACECATEGORY') or hasAuthority('admin')")
-    public APIResponseDTO editPlaceCategory(@RequestBody PlaceCategory placeCategory, @PathVariable Long id){
+    public APIResponseDTO editPlaceCategory(@Valid @RequestBody PlaceCategory placeCategory, @PathVariable Long id){
         PlaceCategory placeCategoryOld = placeCategoryService.findById(id).orElse(new PlaceCategory());
         System.out.print(placeCategory.getIdPlaceType());
         if (placeCategoryOld == null) return new APIResponseDTO(200, "Not Existed!", null);
