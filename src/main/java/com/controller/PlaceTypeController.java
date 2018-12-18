@@ -57,11 +57,15 @@ public class PlaceTypeController {
         return new APIResponseDTO(200, "Edited", placeType);
     }
 
-    @DeleteMapping(value = "/place-types/{id}")
+    @DeleteMapping(value = "/place-type/{id}")
     @PreAuthorize("hasAuthority('DEL_PLACETYPE')")
     public APIResponseDTO deleteStudent(@PathVariable long id) {
-        placeTypeService.deleteById(id);
-        return  new APIResponseDTO(201,"Deleted!",null);
+        if(placeTypeService.existCategorywithTypeId(id)){
+            return new APIResponseDTO(500, "Cannot delete!", null);
+        } else {
+            placeTypeService.deleteById(id);
+            return  new APIResponseDTO(200,"Deleted!", null);
+        }
     }
 
 }

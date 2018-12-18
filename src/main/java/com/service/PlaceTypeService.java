@@ -4,6 +4,7 @@ import com.dto.*;
 import com.entity.Location;
 import com.entity.PlaceCategory;
 import com.entity.PlaceType;
+import com.repository.PlaceCategoryRepository;
 import com.repository.PlaceTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class PlaceTypeService {
     @Autowired
     PlaceCategoryService placeCategoryService;
 
+    @Autowired
+    PlaceCategoryRepository placeCategoryRepository;
+
     public List<PlaceType> findAll(){
         return (List<PlaceType>) placeTypeRepository.findAllByOrderByIdDesc();
     }
@@ -38,14 +42,23 @@ public class PlaceTypeService {
     public Optional<PlaceType> findById(Long id){
         return   placeTypeRepository.findById(id);
     }
-    public  void  deleteById(Long id){
-        placeTypeRepository.deleteById(id);
+    public  void   deleteById(Long id){
+            placeTypeRepository.deleteById(id);
     }
 
     public TypeResponseDTO findTypeResponseDTOByIdType(Long idType) {
         LocationProfileForTypeDTO locationProfileForTypeDTO = locationService.findLastestLocationByIdType(idType);
         ArrayList<CategoryResponseDTO> listCRDTO = placeCategoryService.findAllCategoryDetailOfOneType(idType);
         return new TypeResponseDTO(locationProfileForTypeDTO,listCRDTO);
+    }
+
+    public boolean existCategorywithTypeId(Long typeId){
+        List<PlaceCategory> placeCategoryList = placeCategoryRepository.findByIdPlaceType(typeId);
+        if (placeCategoryList.size() == 0 ){
+            return false;
+        } else {
+            return  true;
+        }
     }
 
 }

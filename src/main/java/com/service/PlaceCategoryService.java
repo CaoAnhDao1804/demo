@@ -3,7 +3,9 @@ package com.service;
 import com.dto.CategoryResponseDTO;
 import com.dto.LocationProfileDTO;
 import com.dto.LocationProfileForTypeDTO;
+import com.entity.Location;
 import com.entity.PlaceCategory;
+import com.repository.LocationRepository;
 import com.repository.PlaceCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class PlaceCategoryService {
 
     @Autowired
     LocationService locationService;
+
+    @Autowired
+    LocationRepository  locationRepository;
 
     public List<PlaceCategory> findAllPlaceCategory(){
         return (List<PlaceCategory>) placeCategoryRepository.findAll();
@@ -68,5 +73,16 @@ public class PlaceCategoryService {
             listCTDTO.add(new CategoryResponseDTO(placeCategory.getId(),placeCategory.getName(),listLocationOfOneCategory));
         }
         return listCTDTO;
+    }
+
+    public boolean existLocationwithCategoryId(long id) {
+
+        List<Location> locations = locationRepository.findByIdPlaceCategory(id);
+        if (locations.size() == 0){
+            return false;
+        } else {
+            return true;
+        }
+
     }
 }

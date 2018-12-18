@@ -65,11 +65,16 @@ public class PlaceCategoryController {
 
     }
 
-    @DeleteMapping(value = "/place-categories/{id}")
+    @DeleteMapping(value = "/place-category/{id}")
     @PreAuthorize("hasAuthority('DEL_PLACECATEGORY') or hasAuthority('admin')")
     public APIResponseDTO deletePlaceCategory(@PathVariable long id) {
-        placeCategoryService.deletePlaceCategory(id);
-        return  new APIResponseDTO(200,"Deleted!", null);
+
+        if (placeCategoryService.existLocationwithCategoryId(id)){
+            return new APIResponseDTO (500, "Cannot delete!", null);
+        } else {
+            placeCategoryService.deletePlaceCategory(id);
+            return  new APIResponseDTO(200,"Deleted successful!", null);
+        }
 
     }
 
