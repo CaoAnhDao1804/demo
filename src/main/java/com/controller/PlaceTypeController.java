@@ -58,7 +58,7 @@ public class PlaceTypeController {
     }
 
     @DeleteMapping(value = "/place-type/{id}")
-    @PreAuthorize("hasAuthority('DEL_PLACETYPE')")
+    @PreAuthorize("hasAuthority('DEL_PLACETYPE') or hasAuthority('admin')")
     public APIResponseDTO deleteStudent(@PathVariable long id) {
         if(placeTypeService.existCategorywithTypeId(id)){
             return new APIResponseDTO(500, "Cannot delete!", null);
