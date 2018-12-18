@@ -3,10 +3,7 @@ package com.model;
 
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 
@@ -31,17 +28,21 @@ public class LocationRequest {
 
     Long idStatus;
 
-    @NotNull(message = "Address couldn't be null")
-    @NotBlank(message = "Address couldn't blank")
+
     String address;
 
 
     Double longitudeAddress;
     Double latitudeAddress;
+
     String nameAddress;
+
+    @NotNull(message = "Content couldn't be null")
+    @NotBlank(message = "Content couldn't blank")
     String phone;
 
-
+    @NotNull(message = "Email couldn't be null")
+    @Email(message = "Email validation")
     String email;
 
     Long idDuration;
