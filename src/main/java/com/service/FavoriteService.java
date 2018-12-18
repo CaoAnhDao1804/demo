@@ -4,6 +4,7 @@ import com.config.JwtTokenProvider;
 import com.entity.Favorite;
 import com.entity.PlaceCategory;
 import com.entity.Traveler;
+import com.entity.Users;
 import com.repository.FavoriteRepository;
 import com.repository.PlaceCategoryRepository;
 import com.repository.TravelerResponsitory;
@@ -60,4 +61,5 @@ public class FavoriteService {
             return false;
         }
     }
+
 }

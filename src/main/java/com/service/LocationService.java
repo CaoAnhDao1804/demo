@@ -224,7 +224,7 @@ public class LocationService {
             locationProfileDTO.setContent(content.getDetail());
 //            Status  status;
             Status status = statusRepository.findById(location.getIdStatus()).orElse(new Status());
-            locationProfileDTO.setStatus(status.getName());
+            locationProfileDTO.setStatus(location.getIdStatus().toString());
 //            Address address;
             Address address = addressRepository.findById(location.getIdAddress()).orElse(new Address());
             locationProfileDTO.setAddress(address.getName());
@@ -622,4 +622,25 @@ public class LocationService {
         return getAllLocationProfileForTypeDTOWithLocation(locations);
     }
 
+    public boolean updateStatusLocation(Long id) {
+        Location location = locationRepository.findById(id).orElse(new Location());
+        if (location.getId() != null){
+            if (location.getIdStatus()!=null){
+                if (location.getIdStatus() == 0){
+                    location.setIdStatus(1L);
+                    locationRepository.save(location);
+                    return true;
+                } else {
+                    location.setIdStatus(0L);
+                    locationRepository.save(location);
+                    return false;
+                }
+            } else {
+                throw  new CustomException(" Exception : Null Value Status", 500);
+            }
+
+        } else {
+            throw new NullPointerException();
+        }
+    }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface FavoriteRepository extends CrudRepository<Favorite, Long> {
 
+    public List<Favorite> findAllByIdLocation(Long id);
     public Favorite findByIdUserAndIdLocation(Long idUser, Long idLocation);
     public Object deleteByIdUserAndIdLocation(Long idUser, Long idLocation);
 

@@ -232,4 +232,10 @@ public class LocationController {
 
     }
 
+    @PreAuthorize("hasAuthority('EDIT_LOCATION') or hasAuthority('admin')")
+    @PutMapping(value = "/api/status-of-location/{id}")
+    public APIResponseDTO updateStatusOfLocation(@PathVariable Long id){
+        return new APIResponseDTO(200, "Update Status", locationService.updateStatusLocation(id));
+    }
+
 }
